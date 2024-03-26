@@ -10,7 +10,7 @@ function App() {
     engName: "Damascus",
     arName: "دمشق",
   });
-  const url = `http://api.aladhan.com/v1/timingsByCity?city=${city.engName}&country=Syria&method=8`;
+  const url = `https://api.aladhan.com/v1/timingsByCity?city=${city.engName}&country=Syria&method=8`;
 
   const timingsNames = [
     { prayer: "Fajr", arName: "الفجر" },
