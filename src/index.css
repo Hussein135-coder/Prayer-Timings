@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --main-color: rgb(30 41 59);
+  --secondary-color: rgb(148 163 184);
+  --third-color: #9db2bf;
+  --text-color: #dde6ed;
+}
+
+body {
+  font-family: "Almarai", sans-serif;
+  background-color: var(--main-color);
+}
+
+.header {
+  clip-path: ellipse(50% 40% at 50% 0%);
+  box-shadow: var(--secondary-color) 0px 3px 8px;
+}
