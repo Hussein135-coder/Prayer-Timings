@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 dayjs.extend(duration);
 
 const Time = ({ data, timingsNames }) => {
-  const [nextTime, setNextTime] = useState(0);
+  const [nextTime, setNextTime] = useState(-1);
   const [diffTime, setDiffTime] = useState("");
   const [diffZero, setDiffZero] = useState("");
 
@@ -38,11 +38,12 @@ const Time = ({ data, timingsNames }) => {
   }, [data, diffZero, afterIshaCheck]);
 
   const changeTime = () => {
+    setDiffZero(1);
     const timeNow = dayjs().format("HH:mm:ss");
 
     const fromT = dayjs(`2000-01-01 ${timeNow}`);
 
-    const nextSalatTime = data?.timings[timingsNames[nextTime].prayer];
+    const nextSalatTime = data?.timings[timingsNames[nextTime]?.prayer];
 
     const toT = dayjs(`2000-01-${afterIshaCheck ? 2 : 1} ${nextSalatTime}`);
 
@@ -68,7 +69,7 @@ const Time = ({ data, timingsNames }) => {
   return (
     <div className="text-center lg:col-span-12 xl:col-span-1">
       <h2 className="text-white text-2xl mb-2">
-        صلاة {timingsNames[nextTime].arName} بعد:
+        صلاة {timingsNames[nextTime]?.arName || "..."} بعد:
       </h2>
       <span className="text-white text-2xl">
         {data ? formattedTime : "..."}

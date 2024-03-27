@@ -3,7 +3,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-function useFetch(url) {
+function useFetch(url, city) {
+  console.log(city, "ss");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
@@ -13,22 +14,25 @@ function useFetch(url) {
     setData(null);
     setError(null);
     const source = axios.CancelToken.source();
-    axios
-      .get(url, { cancelToken: source.token })
-      .then((res) => {
-        setLoading(false);
+    if (city.engName != "") {
+      axios
+        .get(url, { cancelToken: source.token })
+        .then((res) => {
+          setLoading(false);
 
-        res.data && setData(res.data.data);
-        res.content && setData(res.content);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError("حدث خطأ ما");
-      });
+          res.data && setData(res.data.data);
+          res.content && setData(res.content);
+        })
+        .catch(() => {
+          setLoading(false);
+          setError("حدث خطأ ما");
+        });
+    }
+
     return () => {
       source.cancel();
     };
-  }, [url]);
+  }, [city]);
 
   return { data, loading, error };
 }
