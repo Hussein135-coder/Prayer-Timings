@@ -6,7 +6,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [react()],
     define: {
-      VITE_COUNTRIES_API_KEY: JSON.stringify(env.VITE_COUNTRIES_API_KEY),
+      __APP_ENV__: JSON.stringify(env.VITE_COUNTRIES_API_KEY),
     },
   };
 });
