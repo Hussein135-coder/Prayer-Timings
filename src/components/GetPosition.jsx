@@ -1,16 +1,14 @@
 import { Ripple, Modal, initTWE } from "tw-elements";
-import ModalComp from "../ModalComp";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 initTWE({ Modal, Ripple });
 
 // eslint-disable-next-line react/prop-types
 const GetPosition = ({ setCountry, setCity, setChangedByPosition }) => {
-  const [locationMsg, setLocationMsg] = useState("");
   const [url, setUrl] = useState("");
   const [loadingBtn, setLoadingBtn] = useState(null);
-
-  const myModal = new Modal(document.getElementById("location"));
 
   const fetchLocation = async (url) => {
     try {
@@ -28,13 +26,15 @@ const GetPosition = ({ setCountry, setCity, setChangedByPosition }) => {
         engName: data.city,
         arName: data.city,
       });
-      setLocationMsg(`المدينة: ${data.city}`);
-      myModal.show();
+      toast.success(`المدينة: ${data.city}`, {
+        position: "top-center",
+      });
     } catch (error) {
       console.log(error, "error");
       setLoadingBtn(false);
-      setLocationMsg("حدث خطأ ما");
-      myModal.show();
+      toast.error("حدث خطأ ما", {
+        position: "top-center",
+      });
     }
   };
 
@@ -54,8 +54,9 @@ const GetPosition = ({ setCountry, setCity, setChangedByPosition }) => {
 
   const errorFunc = () => {
     setLoadingBtn(false);
-    setLocationMsg("حدث خطأ ما");
-    myModal.show();
+    toast.error("حدث خطأ ما", {
+      position: "top-center",
+    });
   };
 
   const handleClick = () => {
@@ -63,8 +64,9 @@ const GetPosition = ({ setCountry, setCity, setChangedByPosition }) => {
     setLoadingBtn(true);
     if (!navigator.geolocation) {
       setLoadingBtn(false);
-      setLocationMsg("عذرا، متصفحك لا يدعم هذه الميزة");
-      myModal.show();
+      toast.error("عذرا، متصفحك لا يدعم هذه الميزة", {
+        position: "top-center",
+      });
     } else {
       navigator.geolocation.getCurrentPosition(successFunc, errorFunc);
     }
@@ -100,13 +102,6 @@ const GetPosition = ({ setCountry, setCity, setChangedByPosition }) => {
         </svg>
         {loadingBtn == true ? "جار تحديد الموقع" : "حدد موقعي"}
       </button>
-
-      <ModalComp
-        modalId={"location"}
-        title={"تحديد الموقع"}
-        content={locationMsg}
-        myModal={myModal}
-      />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import CityTimes from "./components/CityTimes/CityTimes";
 import Header from "./components/Header";
 import useFetch from "./hooks/useFetch";
 import GetPosition from "./components/GetPosition";
-
+import "./animista.css";
 function App() {
   const [country, setCountry] = useState({
     iso: "SY",
@@ -30,7 +30,7 @@ function App() {
   const { data, loading, error } = useFetch(url, city);
   console.log(error);
   return (
-    <div className="container mx-auto">
+    <div className="container slide-in-top mx-auto">
       <Header />
       <CityTimes
         changeCity={setCity}
@@ -45,7 +45,7 @@ function App() {
       <div className="flex justify-center gap-4 flex-wrap">
         {timingsNames.map((time, i) => {
           return (
-            <div className=" pb-10 w-[165px]" key={i}>
+            <div className="fade-in-fwd pb-10 w-[165px]" key={i}>
               <Card
                 title={time.arName}
                 time={loading ? loading : data?.timings[time.prayer]}
@@ -54,11 +54,13 @@ function App() {
           );
         })}
       </div>
-      <GetPosition
-        setChangedByPosition={setChangedByPosition}
-        setCity={setCity}
-        setCountry={setCountry}
-      />
+      {city.engName && (
+        <GetPosition
+          setChangedByPosition={setChangedByPosition}
+          setCity={setCity}
+          setCountry={setCountry}
+        />
+      )}
     </div>
   );
 }

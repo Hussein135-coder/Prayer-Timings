@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-// eslint-disable-next-line react/prop-types
+import countries from "../../data/countries";
+import { toast } from "react-toastify";
 const SelectCity = ({
   setCity,
   setCountry,
@@ -9,17 +10,10 @@ const SelectCity = ({
   setByPosition,
   byPosition,
 }) => {
-  const [countries, setCountries] = useState([
-    { id: 215, name: "Syria", iso2: "SY" },
-  ]);
-
   const [cities, setCities] = useState([{ id: 104940, name: "Ad Darbāsīyah" }]);
 
   const headers = new Headers();
-  headers.append(
-    "X-CSCAPI-KEY",
-    "NUFGRE1QZkFUTmRkVnlvUWtMbEhLazVwUjZSUDZFelBReDZuYnNGSg=="
-  );
+  headers.append("X-CSCAPI-KEY", import.meta.env.VITE_COUNTRIES_API_KEY);
 
   const requestOptions = {
     method: "GET",
@@ -27,37 +21,29 @@ const SelectCity = ({
     redirect: "follow",
   };
 
-  const getCountries = async () => {
-    const res = await fetch(
-      "https://api.countrystatecity.in/v1/countries",
-      requestOptions
-    );
-    const data = await res.text();
-    setCountries(JSON.parse(data));
-  };
-
   const getCities = async (country) => {
-    const res = await fetch(
-      `https://api.countrystatecity.in/v1/countries/${country}/cities`,
-      requestOptions
-    );
-    const data = await res.text();
-    const parsedData = JSON.parse(data);
-    if (byPosition) {
-      setByPosition(false);
-    } else {
-      setCity({
-        engName: parsedData[0].name,
-        arName: parsedData[0].name,
+    try {
+      const res = await fetch(
+        `https://api.countrystatecity.in/v1/countries/${country}/cities`,
+        requestOptions
+      );
+      const data = await res.text();
+      const parsedData = JSON.parse(data);
+      if (byPosition) {
+        setByPosition(false);
+      } else {
+        setCity({
+          engName: parsedData[0].name,
+          arName: parsedData[0].name,
+        });
+      }
+      setCities(parsedData);
+    } catch (error) {
+      toast.error("حدث خطأ ما، قم بإعادة تحميل الصفحة", {
+        position: "top-center",
       });
     }
-    console.log(parsedData);
-    setCities(parsedData);
   };
-
-  useEffect(() => {
-    getCountries();
-  }, []);
 
   useEffect(() => {
     setCities(["..."]);
